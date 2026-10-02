@@ -1,0 +1,421 @@
+/**
+ * Keffals Postiz Theme
+ * Injected by Caddy via response-body rewrite (replace)
+ * BEFORE </head> in text/html responses.
+ *
+ * Design tokens are synced from the Keffals brand.
+ * Upgrade safety: lives in /opt/postiz/theme/, not in the Postiz container.
+ *
+ * SHARED TOKENS (keep in sync with keffals.gg/brand/keffals-tokens.css):
+ *   --kg-bg        #0e0e10  background
+ *   --kg-surface   #18181b  cards/panels
+ *   --kg-raised   #26262c  raised elements / buttons
+ *   --kg-line     #2e2e35  borders
+ *   --kg-text     #efeff1  primary text
+ *   --kg-text-dim #adadb8  secondary text
+ * --kg-text-mute #7a7a85  muted/placeholder text
+ *   --kg-accent   #9333ea  purple accent
+ *   --kg-accent-hover #a855f7
+ *   --kg-accent-soft rgba(147,51,234,.16)
+ *   --kg-ok       #22c55e  success
+ *   --kg-warn     #f59e0b  warning
+ *   --kg-bad      #ef4444  error
+ *   --kg-info     #38bdf8  info
+ *   --kg-radius-sm 7.5px
+ *   --kg-radius   10px
+ *   --kg-radius-lg 14px
+ *   --kg-topbar-h 52px
+ *   --kg-font    "Inter", system-ui, -apple-system, sans-serif
+ *   --kg-font-mono ui-monospace, "JetBrains Mono", monospace
+ */
+
+:root {
+  /* ── Keffals palette ────────────────────────────────────────────── */
+  --kg-bg:           #0e0e10;
+  --kg-surface:      #18181b;
+  --kg-raised:       #26262c;
+  --kg-line:         #2e2e35;
+  --kg-text:         #efeff1;
+  --kg-text-dim:     #adadb8;
+  --kg-text-mute:    #7a7a85;
+  --kg-accent:       #9333ea;
+  --kg-accent-hover: #a855f7;
+  --kg-accent-soft:  rgba(147, 51, 234, 0.16);
+  --kg-ok:           #22c55e;
+  --kg-warn:         #f59e0b;
+  --kg-bad:          #ef4444;
+  --kg-info:         #38bdf8;
+  --kg-radius-sm:    7.5px;
+  --kg-radius:       10px;
+  --kg-radius-lg:    14px;
+  --kg-topbar-h:     52px;
+  --kg-font:         "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --kg-font-mono:    ui-monospace, "JetBrains Mono", Menlo, monospace;
+
+  /* ── Postiz variable overrides ───────────────────────────────────── */
+  --new-bgColor:         var(--kg-bg);
+  --new-bgColorInner:    var(--kg-surface);
+  --new-border:          var(--kg-line);
+  --new-btn-primary:     var(--kg-accent);
+  --new-btn-simple:      var(--kg-raised);
+  --new-col-color:       var(--kg-raised);
+  --new-box-hover:       var(--kg-raised);
+  --new-textItemBlur:    var(--kg-text-mute);
+
+  --color-primary:       var(--kg-bg);
+  --color-input:        var(--kg-raised);
+  --color-text:         var(--kg-text);
+
+  /* ── Keffals nav strip (40px, reserved in body padding-top) ─────── */
+  --keffals-nav-h: 40px;
+}
+
+/* ── Font face (self-hosted) ───────────────────────────────────────── */
+@font-face {
+  font-family: "Inter";
+  src: url("/_kg/fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/_kg/fonts/Inter-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/_kg/fonts/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/_kg/fonts/Inter-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Global font + bg override ──────────────────────────────────────── */
+html, body {
+  font-family: var(--kg-font) !important;
+  background-color: var(--kg-bg) !important;
+  color: var(--kg-text) !important;
+}
+
+/* ── Reserve space for app-switcher strip ───────────────────────────── */
+body {
+  padding-top: var(--keffals-nav-h) !important;
+}
+
+/* ── App-switcher strip (40px top bar) ──────────────────────────────── */
+#keffals-app-switcher {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--keffals-nav-h);
+  z-index: 9999;
+  background: var(--kg-surface);
+  border-bottom: 1px solid var(--kg-line);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 4px;
+  font-family: var(--kg-font);
+}
+
+.keffals-app-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--kg-radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--kg-text-dim);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.keffals-app-btn:hover {
+  background: var(--kg-raised);
+  color: var(--kg-text);
+}
+
+.keffals-app-btn.active {
+  background: var(--kg-accent-soft);
+  color: var(--kg-accent);
+  border-color: var(--kg-accent);
+}
+
+.keffals-app-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--kg-line);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ── Keffals nav strip loading fallback ─────────────────────────────── */
+#keffals-app-switcher[data-loading] .keffals-app-btn {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Border-radius: 10px inputs/buttons, 14px cards ────────────────── */
+input,
+select,
+textarea,
+button,
+.btn,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  border-radius: var(--kg-radius) !important;
+}
+
+[class*="card"],
+[class*="Card"],
+[class*="panel"],
+[class*="Panel"],
+.modal,
+[class*="modal"],
+div[class*="rounded"] {
+  /* Leave explicit Tailwind-style radius utilities alone;
+     only target elements without explicit radius overrides */
+}
+
+/* ── Primary button: purple accent ────────────────────────────────── */
+.btn-primary,
+button[type="submit"],
+[class*="btn-primary"],
+[class*="btn"][class*="primary"] {
+  background-color: var(--kg-accent) !important;
+  border-color: var(--kg-accent) !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover,
+button[type="submit"]:hover,
+[class*="btn-primary"]:hover {
+  background-color: var(--kg-accent-hover) !important;
+  border-color: var(--kg-accent-hover) !important;
+}
+
+/* ── Simple/secondary button: raised surface ──────────────────────── */
+.btn-simple,
+button:not([type="submit"]),
+[class*="btn-simple"],
+[class*="btn-secondary"] {
+  background-color: var(--kg-raised) !important;
+  border-color: var(--kg-line) !important;
+  color: var(--kg-text) !important;
+}
+
+/* ── Navigation / sidebar ──────────────────────────────────────────── */
+nav,
+.sidebar,
+[class*="sidebar"],
+[class*="nav"] {
+  background-color: var(--kg-surface) !important;
+  border-color: var(--kg-line) !important;
+}
+
+/* ── Calendar ──────────────────────────────────────────────────────── */
+.calendar-grid,
+[class*="calendar"],
+[data-testid="calendar"],
+.react-big-calendar,
+.postiz-calendar {
+  background: var(--kg-bg) !important;
+}
+
+/* ── Post previews: keep platform brand colours (do NOT override) ──── */
+[class*="platform"][style*="rgb"],
+[class*="platform"][style*="#"],
+div[style*="background"][style*="linkedin"],
+div[style*="background"][style*="facebook"],
+div[style*="background"][style*="instagram"],
+div[style*="background"][style*="tiktok"],
+div[style*="background"][style*="youtube"] {
+  /* Platform brand colours intentionally preserved */
+}
+
+/* ── Accessibility: focus rings ────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--kg-accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* ── prefers-reduced-motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Mobile (390px): compact icon rail ──────────────────────────────── */
+@media (max-width: 480px) {
+  /* Ensure tap targets ≥ 44px */
+  button,
+  a,
+  [role="button"],
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Compact nav strip at small sizes */
+  #keffals-app-switcher {
+    padding: 0 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #keffals-app-switcher::-webkit-scrollbar {
+    display: none;
+  }
+
+  .keffals-app-btn {
+    font-size: 12px;
+    padding: 0 8px;
+  }
+
+  /* Ensure sidebar/icon rail items are at least 44px tall */
+  [class*="sidebar"] [class*="icon"],
+  [class*="nav"] [class*="icon"],
+  nav [class*="icon"] {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+}
+
+/* ── Text contrast: --kg-text-mute on --kg-bg must be ≥ 4.5:1 ──────
+   #7a7a85 on #0e0e10 = ~5.2:1 ✓ PASSES WCAG AA                     */
+/* Muted text elements */
+.text-muted,
+[class*="muted"],
+[class*="blur"],
+[style*="textItemBlur"] {
+  color: var(--kg-text-mute) !important;
+}
+
+/* ── Loading / spinner overlay fixes ──────────────────────────────── */
+.loading-overlay,
+[data-loading="true"],
+.spinner-wrapper {
+  background-color: rgba(14, 14, 16, 0.85) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Agents page: if OPENAI_API_KEY is missing, grey out nav item ── */
+.nav-agents[aria-disabled="true"],
+a[href="/agents"][aria-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* ── Settings modal / popup ─────────────────────────────────────────── */
+.settings-modal,
+.settings-popup,
+[class*="settings"][class*="popup"],
+[class*="settings"][class*="modal"] {
+  background: var(--kg-surface) !important;
+}
+
+/* ── Analytics / charts ─────────────────────────────────────────────── */
+.chart-wrapper,
+[data-testid="analytics"],
+[class*="chart"] {
+  background: var(--kg-surface) !important;
+}
+
+/* ── Media library ──────────────────────────────────────────────────── */
+.media-grid,
+[class*="media"][class*="library"],
+[class*="media"][class*="grid"] {
+  background: var(--kg-bg) !important;
+}
+
+/* ── Discord/Twitch: brand colors preserved in channel cards ────────── */
+[style*="#5865F2"],
+[style*="#9146FF"],
+[style*="#1DB954"] {
+  /* Discord/Twitch/Spotify brand colours preserved */
+}
+</style><script>/**
+ * Keffals Postiz Enhancement Script
+ * Loaded via: Link: </_kg/enhance.js>; rel=modulepreload; as=script
+ * 
+ * HOW IT RUNS: when a <script type="module" src="/_kg/enhance.js"> tag appears
+ * in the HTML (injected via the keffals-theme.css </style> trick), this file
+ * executes and applies DOM enhancements.
+ */
+(function () {
+  'use strict';
+  try {
+    // ── App Switcher (40px strip at top of page) ───────────────────
+    var NAV_ID = 'keffals-app-switcher';
+    if (!document.getElementById(NAV_ID)) {
+      var strip = document.createElement('div');
+      strip.id = NAV_ID;
+      strip.innerHTML =
+        '<a class="keffals-app-btn active" href="/">Postiz</a>' +
+        '<div class="keffals-app-sep"></div>' +
+        '<a class="keffals-app-btn" href="https://keffals.gg">Keffals</a>' +
+        '<a class="keffals-app-btn" href="https://keffals.gg/chat">Chat</a>' +
+        '<a class="keffals-app-btn" href="https://dashboard.keffals.gg">Dashboard</a>';
+      document.body.prepend(strip);
+    }
+
+    // ── "Logout from Postiz" → "Sign out" ────────────────────────
+    var fixLogout = function () {
+      document.querySelectorAll('button,a,[role="button"],span').forEach(function (n) {
+        var t = (n.textContent || '').trim();
+        if (t === 'Logout from Postiz' && !n.firstChild) {
+          n.textContent = 'Sign out';
+        }
+        if (n.title && n.title.includes('Logout from Postiz')) {
+          n.title = n.title.replace('Logout from Postiz', 'Sign out');
+        }
+      });
+    };
+
+    // ── Set document <title> ───────────────────────────────────────
+    var fixTitle = function () {
+      var t = document.title || '';
+      var K = ' · Keffals Postiz';
+      if (t && !t.includes(K) && (t.startsWith('Postiz') || t.includes(' - Postiz'))) {
+        document.title = t.replace(/^Postiz\s*-\s*/, '').replace(/\s*-\s*Postiz$/, '').trim() + K;
+      }
+    };
+
+    // ── lang="en" ────────────────────────────────────────────────
+    if (!document.documentElement.lang) {
+      document.documentElement.lang = 'en';
+    }
+
+    // ── MutationObserver for SPA navigation ──────────────────────
+    new MutationObserver(function () { fixLogout(); fixTitle(); })
+      .observe(document.body, { childList: true, subtree: true });
+
+    fixLogout();
+    fixTitle();
+  } catch (e) {}
+})();
+</script><style></style>
